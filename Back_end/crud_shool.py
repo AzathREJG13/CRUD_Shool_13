@@ -1,29 +1,44 @@
+import random
+
 class Student:
-    def __init__(self, id_student, name, last_name, year_school):
-        self.id_student = id_student
-        self.name = name 
-        self.last_name = last_name
-        self.year_school = year_school
+    def __init__(self):
+        self.id_student = None
+        self.name = None
+        self.last_name = None
+        self.year_school = None
         self.dates_students = []
         self.students = {}
     
-    def view_dates_student(self, answer):
-        if answer == 'yes':
-            dates = [self.name, self.last_name, self.year_school]
-            print(dates)
-            self.dates_students.append(dates)
-            print(self.dates_students)
-            
-            self.students[self.id_student] = dates
+    def list_dates_student(self):
+        dates = [self.name, self.last_name, self.year_school]
+        self.dates_students.append(dates)        
+        self.students[self.id_student] = dates
+        print(self.students)
+    
+    def view_dates_students(self):
+        if self.students:
             print(self.students)
         else:
-            print('dates NO')
+            print("No students have been added yet.")
+    
+    def login_students(self):
+        self.id_student = random.randint(1, 1000)  
+        self.name = input('Name student: ').lower()
+        self.last_name = input('Last name student: ').lower()
+        self.year_school = input('Year of school: ')
+        print(f"Student ID generated: {self.id_student}")
 
+school_students = Student()
 
-enter_id = int(input('enter id: '))
-enter_name = input('enter name: ')
-enter_last_name = input('enter last name: ')
-years = int(input('the years school: '))
-my_student = Student(enter_id, enter_name, enter_last_name, years)
-answer_you = input('yes or no: ').lower()
-my_student.view_dates_student(answer_you)
+while True:
+    opcion = input('L - login student, V - view students, X - exit:  ').lower()
+    if opcion == 'l':
+        school_students.login_students()
+        school_students.list_dates_student()
+    elif opcion == 'v':
+        school_students.view_dates_students()
+    elif opcion == 'x':
+        print('Exit')
+        break
+    else:
+        print('Error: invalid option')
