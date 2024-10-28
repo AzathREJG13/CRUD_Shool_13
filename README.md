@@ -1,1 +1,1 @@
-CRUD_Shool_13 init 
+Connecting python and mysql for crud student storage
