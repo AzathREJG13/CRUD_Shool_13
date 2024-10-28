@@ -1,5 +1,4 @@
 import random
-import mysql.connector 
 
 class Student:
     def __init__(self):
@@ -28,11 +27,55 @@ class Student:
         self.last_name = input('Last name student: ').lower()
         self.year_school = input('Year of school: ')
         print(f"Student ID generated: {self.id_student}")
+    
+    def update_students(self):
+        serch_id = int(input('ID : '))
+        serch = self.students.get(serch_id)
+
+        if serch is None:
+            print('No student')
+            return
+        update_list = list(serch)
+        print(update_list)
+        while True:
+            update = input('Update First Name(N), Last Name(L), Shool_year(Y):  ').lower()
+            if update == 'n':
+                update_list.pop(0)
+                new_name = input('Fist Name: ').lower()
+                update_list.insert(0, new_name)
+                print(update_list)
+                self.students[serch_id] = update_list
+                print(self.students)
+                break
+            elif update == 'l':
+                update_list.pop(1)
+                new_last_name = input('Last Name: ').lower()
+                update_list.insert(1, new_last_name)
+                print(update_list)
+                self.students[serch_id] = update_list
+                print(self.students)
+                break
+            elif update == 'y':
+                update_list.pop(2)
+                new_year = int(input('Shool year: '))
+                update_list.insert(2, new_year)
+                print(update_list)
+                self.students[serch_id] = update_list
+                print(self.students)
+                break
+            else:
+                print('Error.')
+
+
+
+
+
+
 
 school_students = Student()
 
 while True:
-    opcion = input('L - login student, V - view students, X - exit:  ').lower()
+    opcion = input('L - login student, V - view students, U - update, X - exit:  ').lower()
     if opcion == 'l':
         school_students.login_students()
         school_students.list_dates_student()
@@ -41,5 +84,7 @@ while True:
     elif opcion == 'x':
         print('Exit')
         break
+    elif opcion == 'u':
+        school_students.update_students()
     else:
         print('Error: invalid option')
