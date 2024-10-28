@@ -1,4 +1,5 @@
 import random
+import mysql.connector 
 
 class Student:
     def __init__(self):
