@@ -8,6 +8,7 @@ class Student:
         self.year_school = None
         self.dates_students = []
         self.students = {}
+        self.assigned_ids = set()
     
     def list_dates_student(self):
         dates = [self.name, self.last_name, self.year_school]
@@ -22,7 +23,14 @@ class Student:
             print("No students have been added yet.")
     
     def login_students(self):
-        self.id_student = random.randint(1, 1000)  
+        while True:
+            new_id = random.randint(1, 1000)
+            if new_id not in self.assigned_ids:
+                self.id_student = new_id
+                self.assigned_ids.add(new_id)  
+                break
+            else:
+                print(f"ID {new_id} already assigned. Generating a new one.")
         self.name = input('Fist Name student: ').lower()
         self.last_name = input('Last name student: ').lower()
         while True:
