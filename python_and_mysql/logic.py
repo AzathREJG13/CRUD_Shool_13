@@ -23,9 +23,19 @@ class Student:
     
     def login_students(self):
         self.id_student = random.randint(1, 1000)  
-        self.name = input('Name student: ').lower()
+        self.name = input('Fist Name student: ').lower()
         self.last_name = input('Last name student: ').lower()
-        self.year_school = input('Year of school: ')
+        while True:
+            try:
+                year_school = int(input('Year of school: '))
+                if year_school <= 3 :
+                    self.year_school = year_school
+                    break
+                else:
+                    print('There are only 3 school years.')
+            except ValueError: 
+                print('Pls enter a valid number.')
+
         print(f"Student ID generated: {self.id_student}")
     
     def update_students(self):
@@ -66,14 +76,17 @@ class Student:
                 print('Error.')
 
     def eliminate_student(self):
-        serch_eliminate = int(input('ID student: '))
-        self.students.get(serch_eliminate)
-        if serch_eliminate is None:
-            print('No student')
+        search_eliminate = int(input('ID student: '))
+        if self.students.get(search_eliminate) is None:
+            print('No student found with that ID.')
             return
-        del (self.students[serch_eliminate])
+        del self.students[search_eliminate]
+        print(f'Student with ID {search_eliminate} has been eliminated.')
         print(self.students)
+
 school_students = Student()
+
+
 while True:
     opcion = input('L - login student, V - view students, U - update, D - delete student, X - exit:  ').lower()
     if opcion == 'l':
