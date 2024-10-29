@@ -31,7 +31,6 @@ class Student:
     def update_students(self):
         serch_id = int(input('ID : '))
         serch = self.students.get(serch_id)
-
         if serch is None:
             print('No student')
             return
@@ -66,16 +65,17 @@ class Student:
             else:
                 print('Error.')
 
-
-
-
-
-
-
+    def eliminate_student(self):
+        serch_eliminate = int(input('ID student: '))
+        self.students.get(serch_eliminate)
+        if serch_eliminate is None:
+            print('No student')
+            return
+        del (self.students[serch_eliminate])
+        print(self.students)
 school_students = Student()
-
 while True:
-    opcion = input('L - login student, V - view students, U - update, X - exit:  ').lower()
+    opcion = input('L - login student, V - view students, U - update, D - delete student, X - exit:  ').lower()
     if opcion == 'l':
         school_students.login_students()
         school_students.list_dates_student()
@@ -86,5 +86,7 @@ while True:
         break
     elif opcion == 'u':
         school_students.update_students()
+    elif opcion == 'd':
+        school_students.eliminate_student()
     else:
         print('Error: invalid option')
