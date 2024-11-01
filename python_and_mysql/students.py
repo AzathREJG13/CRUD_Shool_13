@@ -1,3 +1,5 @@
+from mysql_conexion import cursor, conexion
+
 import random
 
 class Student:
@@ -9,13 +11,28 @@ class Student:
         self.dates_students = []
         self.students = {}
         self.assigned_ids = set()
-    
+
+    def builder(self):
+        consulta = 'SELECT * FROM Student'
+        cursor.execute(consulta)
+        result = cursor.fetchall()
+        for i in result:
+            id_stu = i[0]
+            dates_sql = [i[1], i[2], i[3]]
+            self.students[id_stu] = dates_sql
+            self.assigned_ids.add(id_stu)
+
+
     def list_dates_student(self):
         dates = [self.name, self.last_name, self.year_school]
         self.dates_students.append(dates)        
         self.students[self.id_student] = dates
         print(self.students)
-    
+        consulta = 'INSERT INTO Student (Id_student, Fist_Name, Last_Name, Year) VALUES (%s,%s, %s, %s)'
+        cursor.execute(consulta, (self.id_student, *dates))
+        conexion.commit()
+        print('Dates insert Database.')
+
     def view_dates_students(self):
         if self.students:
             print(self.students)
@@ -63,6 +80,10 @@ class Student:
                 print(update_list)
                 self.students[serch_id] = update_list
                 print(self.students)
+                consulta_update = 'UPDATE Student SET Fist_Name = %s WHERE Id_student = %s'
+                cursor.execute(consulta_update, (new_name, serch_id))
+                conexion.commit()
+                print("Dates update.")
                 break
             elif update == 'l':
                 update_list.pop(1)
@@ -71,6 +92,10 @@ class Student:
                 print(update_list)
                 self.students[serch_id] = update_list
                 print(self.students)
+                consulta_update = 'UPDATE Student SET Last_Name = %s WHERE Id_student = %s'
+                cursor.execute(consulta_update, (new_last_name, serch_id))
+                conexion.commit()
+                print("Dates update.")                
                 break
             elif update == 'y':
                 update_list.pop(2)
@@ -79,6 +104,10 @@ class Student:
                 print(update_list)
                 self.students[serch_id] = update_list
                 print(self.students)
+                consulta_update = 'UPDATE Student SET Year = %s WHERE Id_student = %s'
+                cursor.execute(consulta_update, (new_year, serch_id))
+                conexion.commit()
+                print("Dates update.")                
                 break
             else:
                 print('Error.')
@@ -91,23 +120,32 @@ class Student:
         del self.students[search_eliminate]
         print(f'Student with ID {search_eliminate} has been eliminated.')
         print(self.students)
+        consulta_delete = 'DELETE FROM Student WHERE Id_student = %s'
+        cursor.execute(consulta_delete, (search_eliminate,))
+        conexion.commit()
+        print('Student has been eliminated')
+
+
 
 school_students = Student()
+if __name__ == "__main__":
 
-
-while True:
-    opcion = input('L - login student, V - view students, U - update, D - delete student, X - exit:  ').lower()
-    if opcion == 'l':
-        school_students.login_students()
-        school_students.list_dates_student()
-    elif opcion == 'v':
-        school_students.view_dates_students()
-    elif opcion == 'x':
-        print('Exit')
-        break
-    elif opcion == 'u':
-        school_students.update_students()
-    elif opcion == 'd':
-        school_students.eliminate_student()
-    else:
-        print('Error: invalid option')
+    while True:
+        opcion = input('L - login student, V - view students, U - update, D - delete student, X - exit:  ').lower()
+        if opcion == 'l':
+            school_students.login_students()
+            school_students.list_dates_student()
+        elif opcion == 'v':
+            school_students.builder()
+            school_students.view_dates_students()
+        elif opcion == 'x':
+            print('Exit')
+            cursor.close()
+            conexion.close()
+            break
+        elif opcion == 'u':
+            school_students.update_students()
+        elif opcion == 'd':
+            school_students.eliminate_student()
+        else:
+            print('Error: invalid option')
