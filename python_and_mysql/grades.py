@@ -90,10 +90,9 @@ class Grades:
         self.grades_subject.clear()
         self.keys_subjects.clear()
 
-    def enter_grade_for_year(self):
+    def enter_grade_for_year(self, student_id):
         try:
-            serch_id_student = int(input('Enter student ID: '))
-            serch = my_student.students.get(serch_id_student)
+            serch = my_student.students.get(student_id)
             if serch is None:
                 print('No student found with this ID.')
                 return
@@ -124,13 +123,11 @@ class Grades:
             print(self.grades_subject)
 
             self.grades_student_subject = dict(zip(self.keys_subjects, self.grades_subject))
-            self.list_student_grades[serch_id_student] = self.grades_student_subject
-
+            self.list_student_grades[student_id] = self.grades_student_subject
             print(self.list_student_grades)
 
         except ValueError:
             print('Error: Invalid input.')
-
     def delete_grade(self):
         try:
             id_student = int(input('Enter student ID: '))
